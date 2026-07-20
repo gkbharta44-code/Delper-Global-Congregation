@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Country-Wise Election Organogram</title>
+<style>
+  :root {
+    --navy: #1f4e78;
+    --navy-dark: #163a5a;
+    --gold: #c9a227;
+    --local: #e8f1fb;
+    --guild: #fff2cc;
+    --group: #e2f0d9;
+    --border: #dfe4ea;
+    --text: #26313d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
+    color: var(--text);
+    margin: 0;
+    padding: 32px 24px 64px;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  h1 {
+    font-size: 1.5rem;
+    color: var(--navy-dark);
+    margin: 0 0 6px;
+  }
+  .subtitle {
+    color: #5b6b7a;
+    font-size: 0.92rem;
+    margin: 0 0 20px;
+    max-width: 900px;
+    line-height: 1.5;
+  }
+  .tiers {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tier-card {
+    flex: 1 1 200px;
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--navy);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .tier-card:nth-child(2) { border-left-color: #4a90c2; }
+  .tier-card:nth-child(3) { border-left-color: #c9a227; }
+  .tier-card:nth-child(4) { border-left-color: #4f8f4a; }
+  .tier-card .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: .04em; color: #7a8a99; }
+  .tier-card .rule { font-size: 1.05rem; font-weight: 600; margin-top: 4px; color: var(--navy-dark); }
+  .totals {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: var(--navy-dark);
+    color: white;
+    border-radius: 8px;
+    padding: 12px 18px;
+    min-width: 150px;
+  }
+  .stat .num { font-size: 1.3rem; font-weight: 700; }
+  .stat .lbl { font-size: 0.72rem; opacity: .8; text-transform: uppercase; letter-spacing: .03em; }
+  .table-scroll {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: auto;
+    max-height: 78vh;
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+  thead th {
+    position: sticky; top: 0;
+    background: var(--navy);
+    color: white;
+    padding: 10px 12px;
+    text-align: right;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 2;
+  }
+  thead th:first-child { text-align: left; }
+  tbody td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+    white-space: nowrap;
+  }
+  td.country { text-align: left; font-weight: 500; }
+  tbody tr:nth-child(even) { background: #fafbfd; }
+  tbody tr:hover { background: #eef3f8; }
+  td.highlight-local { background: var(--local); }
+  td.highlight-guild { background: var(--guild); }
+  td.highlight-group { background: var(--group); font-weight: 600; }
+  tfoot td {
+    padding: 10px 12px;
+    font-weight: 700;
+    background: #f0e9cf;
+    border-top: 2px solid var(--gold);
+    text-align: right;
+    position: sticky; bottom: 0;
+  }
+  tfoot td.country { text-align: left; }
+  .methodology {
+    margin-top: 24px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 0.82rem;
+    color: #4c5a68;
+    line-height: 1.6;
+  }
+  .methodology h2 { font-size: 0.95rem; color: var(--navy-dark); margin: 0 0 8px; }
+  .methodology b { color: var(--text); }
+  #search {
+    margin-bottom: 14px;
+    padding: 9px 12px;
+    width: 100%;
+    max-width: 320px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.88rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Country-Wise Election Organogram</h1>
+  <p class="subtitle">Members (age 18–75) elect Local Members, who elect Guild Members, who elect Group Members, across every UN-listed country and territory. Base eligible population is estimated from each country's 2026 total population and median age.</p>
+
+  <div class="tiers">
+    <div class="tier-card"><div class="label">Tier 0</div><div class="rule">Members &mdash; age 18–75</div></div>
+    <div class="tier-card"><div class="label">Tier 1</div><div class="rule">1 Local Member / 1,500 Members</div></div>
+    <div class="tier-card"><div class="label">Tier 2</div><div class="rule">1 Guild Member / 150 Local Members</div></div>
+    <div class="tier-card"><div class="label">Tier 3</div><div class="rule">1 Group Member / 700 Guild Members</div></div>
+  </div>
+
+  <div class="totals">
+    <div class="stat"><div class="num">8,298,842,686</div><div class="lbl">Total population</div></div>
+    <div class="stat"><div class="num">5,179,385,731</div><div class="lbl">Est. members (18–75)</div></div>
+    <div class="stat"><div class="num">3,452,809</div><div class="lbl">Local members</div></div>
+    <div class="stat"><div class="num">22,918</div><div class="lbl">Guild members</div></div>
+    <div class="stat"><div class="num">13</div><div class="lbl">Group members</div></div>
+  </div>
+
+  <input id="search" type="text" placeholder="Filter by country...">
+
+  <div class="table-scroll">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Country / Territory</th>
+          <th>Population (2026)</th>
+          <th>Median age</th>
+          <th>Est. % age 18–75</th>
+          <th>Est. members (18–75)</th>
+          <th>Local members</th>
+          <th>Guild members</th>
+          <th>Group members</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+<td class="country">India</td>
+<td class="num">1,476,625,576</td>
+<td class="num">29.2</td>
+<td class="num">60.5%</td>
+<td class="num">893,098,351</td>
+<td class="num highlight-local">595,398</td>
+<td class="num highlight-guild">3,969</td>
+<td class="num highlight-group">5</td>
+</tr><tr>
+<td class="country">China</td>
+<td class="num">1,412,914,089</td>
+<td class="num">40.6</td>
+<td class="num">69.5%</td>
+<td class="num">982,474,785</td>
+<td class="num highlight-local">654,983</td>
+<td class="num highlight-guild">4,366</td>
+<td class="num highlight-group">6</td>
+</tr><tr>
+<td class="country">United States</td>
+<td class="num">349,035,494</td>
+<td class="num">38.7</td>
+<td class="num">68.0%</td>
+<td class="num">237,436,714</td>
+<td class="num highlight-local">158,291</td>
+<td class="num highlight-guild">1,055</td>
+<td class="num highlight-group">1</td>
+</tr><tr>
+<td class="country">Indonesia</td>
+<td class="num">287,886,782</td>
+<td class="num">30.7</td>
+<td class="num">61.7%</td>
+<td class="num">177,550,039</td>
+<td class="num highlight-local">118,366</td>
+<td class="num highlight-guild">789</td>
+<td class="num highlight-group">1</td>
+</tr><tr>
+<td class="country">Pakistan</td>
+<td class="num">259,299,791</td>
+<td class="num">20.8</td>
+<td class="num">53.8%</td>
+<td class="num">139,533,823</td>
+<td class="num highlight-local">93,022</td>
+<td class="num highlight-guild">620</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Nigeria</td>
+<td class="num">242,431,832</td>
+<td class="num">18.3</td>
+<td class="num">51.8%</td>
+<td class="num">125,643,875</td>
+<td class="num highlight-local">83,762</td>
+<td class="num highlight-guild">558</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Brazil</td>
+<td class="num">213,562,666</td>
+<td class="num">35.3</td>
+<td class="num">65.3%</td>
+<td class="num">139,513,049</td>
+<td class="num highlight-local">93,008</td>
+<td class="num highlight-guild">620</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bangladesh</td>
+<td class="num">177,818,044</td>
+<td class="num">26.3</td>
+<td class="num">58.2%</td>
+<td class="num">103,453,535</td>
+<td class="num highlight-local">68,969</td>
+<td class="num highlight-guild">459</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Russia</td>
+<td class="num">143,394,458</td>
+<td class="num">40.7</td>
+<td class="num">69.6%</td>
+<td class="num">99,823,714</td>
+<td class="num highlight-local">66,549</td>
+<td class="num highlight-guild">443</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Ethiopia</td>
+<td class="num">138,902,185</td>
+<td class="num">19.3</td>
+<td class="num">52.6%</td>
+<td class="num">73,091,158</td>
+<td class="num highlight-local">48,727</td>
+<td class="num highlight-guild">324</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mexico</td>
+<td class="num">132,997,658</td>
+<td class="num">30.0</td>
+<td class="num">61.1%</td>
+<td class="num">81,285,083</td>
+<td class="num highlight-local">54,190</td>
+<td class="num highlight-guild">361</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Japan</td>
+<td class="num">122,427,731</td>
+<td class="num">50.2</td>
+<td class="num">77.2%</td>
+<td class="num">94,463,895</td>
+<td class="num highlight-local">62,975</td>
+<td class="num highlight-guild">419</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Egypt</td>
+<td class="num">120,101,175</td>
+<td class="num">24.7</td>
+<td class="num">56.9%</td>
+<td class="num">68,348,190</td>
+<td class="num highlight-local">45,565</td>
+<td class="num highlight-guild">303</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Philippines</td>
+<td class="num">117,724,471</td>
+<td class="num">26.6</td>
+<td class="num">58.4%</td>
+<td class="num">68,771,895</td>
+<td class="num highlight-local">45,847</td>
+<td class="num highlight-guild">305</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">DR Congo</td>
+<td class="num">116,452,162</td>
+<td class="num">15.9</td>
+<td class="num">50.0%</td>
+<td class="num">58,226,081</td>
+<td class="num highlight-local">38,817</td>
+<td class="num highlight-guild">258</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Vietnam</td>
+<td class="num">102,177,431</td>
+<td class="num">33.9</td>
+<td class="num">64.2%</td>
+<td class="num">65,612,980</td>
+<td class="num highlight-local">43,741</td>
+<td class="num highlight-guild">291</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Iran</td>
+<td class="num">93,168,497</td>
+<td class="num">34.5</td>
+<td class="num">64.7%</td>
+<td class="num">60,271,837</td>
+<td class="num highlight-local">40,181</td>
+<td class="num highlight-guild">267</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Turkey</td>
+<td class="num">87,926,082</td>
+<td class="num">33.9</td>
+<td class="num">64.2%</td>
+<td class="num">56,461,512</td>
+<td class="num highlight-local">37,641</td>
+<td class="num highlight-guild">250</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Germany</td>
+<td class="num">83,644,258</td>
+<td class="num">45.7</td>
+<td class="num">73.6%</td>
+<td class="num">61,549,932</td>
+<td class="num highlight-local">41,033</td>
+<td class="num highlight-guild">273</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Tanzania</td>
+<td class="num">72,563,780</td>
+<td class="num">17.6</td>
+<td class="num">51.3%</td>
+<td class="num">37,203,880</td>
+<td class="num highlight-local">24,802</td>
+<td class="num highlight-guild">165</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Thailand</td>
+<td class="num">71,559,614</td>
+<td class="num">41.0</td>
+<td class="num">69.9%</td>
+<td class="num">49,986,537</td>
+<td class="num highlight-local">33,324</td>
+<td class="num highlight-guild">222</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">United Kingdom</td>
+<td class="num">69,931,528</td>
+<td class="num">40.2</td>
+<td class="num">69.2%</td>
+<td class="num">48,404,998</td>
+<td class="num highlight-local">32,269</td>
+<td class="num highlight-guild">215</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">France</td>
+<td class="num">66,746,401</td>
+<td class="num">42.5</td>
+<td class="num">71.0%</td>
+<td class="num">47,419,433</td>
+<td class="num highlight-local">31,612</td>
+<td class="num highlight-guild">210</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">South Africa</td>
+<td class="num">65,453,084</td>
+<td class="num">28.9</td>
+<td class="num">60.2%</td>
+<td class="num">39,431,653</td>
+<td class="num highlight-local">26,287</td>
+<td class="num highlight-guild">175</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Italy</td>
+<td class="num">58,926,166</td>
+<td class="num">48.6</td>
+<td class="num">75.9%</td>
+<td class="num">44,718,073</td>
+<td class="num highlight-local">29,812</td>
+<td class="num highlight-guild">198</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Kenya</td>
+<td class="num">58,636,412</td>
+<td class="num">20.3</td>
+<td class="num">53.4%</td>
+<td class="num">31,320,473</td>
+<td class="num highlight-local">20,880</td>
+<td class="num highlight-guild">139</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Myanmar</td>
+<td class="num">55,184,819</td>
+<td class="num">30.4</td>
+<td class="num">61.4%</td>
+<td class="num">33,902,975</td>
+<td class="num highlight-local">22,601</td>
+<td class="num highlight-guild">150</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Colombia</td>
+<td class="num">53,936,226</td>
+<td class="num">33.0</td>
+<td class="num">63.5%</td>
+<td class="num">34,249,525</td>
+<td class="num highlight-local">22,833</td>
+<td class="num highlight-guild">152</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Sudan</td>
+<td class="num">53,282,719</td>
+<td class="num">18.8</td>
+<td class="num">52.2%</td>
+<td class="num">27,826,120</td>
+<td class="num highlight-local">18,550</td>
+<td class="num highlight-guild">123</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Uganda</td>
+<td class="num">52,761,469</td>
+<td class="num">17.1</td>
+<td class="num">50.9%</td>
+<td class="num">26,841,623</td>
+<td class="num highlight-local">17,894</td>
+<td class="num highlight-guild">119</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">South Korea</td>
+<td class="num">51,600,388</td>
+<td class="num">46.2</td>
+<td class="num">74.0%</td>
+<td class="num">38,175,218</td>
+<td class="num highlight-local">25,450</td>
+<td class="num highlight-guild">169</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Algeria</td>
+<td class="num">48,028,334</td>
+<td class="num">28.8</td>
+<td class="num">60.2%</td>
+<td class="num">28,896,120</td>
+<td class="num highlight-local">19,264</td>
+<td class="num highlight-guild">128</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Iraq</td>
+<td class="num">48,007,437</td>
+<td class="num">21.1</td>
+<td class="num">54.1%</td>
+<td class="num">25,948,025</td>
+<td class="num highlight-local">17,298</td>
+<td class="num highlight-guild">115</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Spain</td>
+<td class="num">47,850,793</td>
+<td class="num">46.3</td>
+<td class="num">74.1%</td>
+<td class="num">35,439,176</td>
+<td class="num highlight-local">23,626</td>
+<td class="num highlight-guild">157</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Argentina</td>
+<td class="num">46,003,734</td>
+<td class="num">33.3</td>
+<td class="num">63.7%</td>
+<td class="num">29,321,987</td>
+<td class="num highlight-local">19,547</td>
+<td class="num highlight-guild">130</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Afghanistan</td>
+<td class="num">45,047,069</td>
+<td class="num">17.4</td>
+<td class="num">51.1%</td>
+<td class="num">23,024,353</td>
+<td class="num highlight-local">15,349</td>
+<td class="num highlight-guild">102</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Yemen</td>
+<td class="num">42,961,653</td>
+<td class="num">18.5</td>
+<td class="num">52.0%</td>
+<td class="num">22,333,744</td>
+<td class="num highlight-local">14,889</td>
+<td class="num highlight-guild">99</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Canada</td>
+<td class="num">40,467,728</td>
+<td class="num">40.8</td>
+<td class="num">69.7%</td>
+<td class="num">28,203,650</td>
+<td class="num highlight-local">18,802</td>
+<td class="num highlight-guild">125</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Angola</td>
+<td class="num">40,215,179</td>
+<td class="num">16.7</td>
+<td class="num">50.6%</td>
+<td class="num">20,331,139</td>
+<td class="num highlight-local">13,554</td>
+<td class="num highlight-guild">90</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Ukraine</td>
+<td class="num">39,535,849</td>
+<td class="num">41.8</td>
+<td class="num">70.5%</td>
+<td class="num">27,868,146</td>
+<td class="num highlight-local">18,578</td>
+<td class="num highlight-guild">123</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Morocco</td>
+<td class="num">38,762,441</td>
+<td class="num">30.1</td>
+<td class="num">61.2%</td>
+<td class="num">23,721,487</td>
+<td class="num highlight-local">15,814</td>
+<td class="num highlight-guild">105</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Poland</td>
+<td class="num">37,843,188</td>
+<td class="num">43.0</td>
+<td class="num">71.4%</td>
+<td class="num">27,035,643</td>
+<td class="num highlight-local">18,023</td>
+<td class="num highlight-guild">120</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Uzbekistan</td>
+<td class="num">37,724,223</td>
+<td class="num">27.0</td>
+<td class="num">58.7%</td>
+<td class="num">22,157,443</td>
+<td class="num highlight-local">14,771</td>
+<td class="num highlight-guild">98</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mozambique</td>
+<td class="num">36,639,851</td>
+<td class="num">16.6</td>
+<td class="num">50.5%</td>
+<td class="num">18,494,504</td>
+<td class="num highlight-local">12,329</td>
+<td class="num highlight-guild">82</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Malaysia</td>
+<td class="num">36,385,115</td>
+<td class="num">31.4</td>
+<td class="num">62.2%</td>
+<td class="num">22,642,256</td>
+<td class="num highlight-local">15,094</td>
+<td class="num highlight-guild">100</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Ghana</td>
+<td class="num">35,697,557</td>
+<td class="num">21.6</td>
+<td class="num">54.4%</td>
+<td class="num">19,436,275</td>
+<td class="num highlight-local">12,957</td>
+<td class="num highlight-guild">86</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saudi Arabia</td>
+<td class="num">35,165,787</td>
+<td class="num">29.7</td>
+<td class="num">60.9%</td>
+<td class="num">21,408,736</td>
+<td class="num highlight-local">14,272</td>
+<td class="num highlight-guild">95</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Peru</td>
+<td class="num">34,922,148</td>
+<td class="num">30.6</td>
+<td class="num">61.6%</td>
+<td class="num">21,510,001</td>
+<td class="num highlight-local">14,340</td>
+<td class="num highlight-guild">95</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Madagascar</td>
+<td class="num">33,522,052</td>
+<td class="num">19.4</td>
+<td class="num">52.7%</td>
+<td class="num">17,666,124</td>
+<td class="num highlight-local">11,777</td>
+<td class="num highlight-guild">78</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cote d'Ivoire</td>
+<td class="num">33,494,346</td>
+<td class="num">18.5</td>
+<td class="num">52.0%</td>
+<td class="num">17,412,136</td>
+<td class="num highlight-local">11,608</td>
+<td class="num highlight-guild">77</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cameroon</td>
+<td class="num">30,640,817</td>
+<td class="num">18.2</td>
+<td class="num">51.7%</td>
+<td class="num">15,855,723</td>
+<td class="num highlight-local">10,570</td>
+<td class="num highlight-guild">70</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Nepal</td>
+<td class="num">29,629,410</td>
+<td class="num">25.7</td>
+<td class="num">57.7%</td>
+<td class="num">17,097,048</td>
+<td class="num highlight-local">11,398</td>
+<td class="num highlight-guild">75</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Niger</td>
+<td class="num">28,814,878</td>
+<td class="num">15.7</td>
+<td class="num">50.0%</td>
+<td class="num">14,407,439</td>
+<td class="num highlight-local">9,604</td>
+<td class="num highlight-guild">64</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Venezuela</td>
+<td class="num">28,633,711</td>
+<td class="num">29.5</td>
+<td class="num">60.7%</td>
+<td class="num">17,386,567</td>
+<td class="num highlight-local">11,591</td>
+<td class="num highlight-guild">77</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Australia</td>
+<td class="num">27,227,096</td>
+<td class="num">38.5</td>
+<td class="num">67.9%</td>
+<td class="num">18,478,404</td>
+<td class="num highlight-local">12,318</td>
+<td class="num highlight-guild">82</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">North Korea</td>
+<td class="num">26,633,691</td>
+<td class="num">36.8</td>
+<td class="num">66.5%</td>
+<td class="num">17,716,118</td>
+<td class="num highlight-local">11,810</td>
+<td class="num highlight-guild">78</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Syria</td>
+<td class="num">26,472,497</td>
+<td class="num">23.8</td>
+<td class="num">56.2%</td>
+<td class="num">14,875,991</td>
+<td class="num highlight-local">9,917</td>
+<td class="num highlight-guild">66</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mali</td>
+<td class="num">25,932,275</td>
+<td class="num">15.9</td>
+<td class="num">50.0%</td>
+<td class="num">12,966,138</td>
+<td class="num highlight-local">8,644</td>
+<td class="num highlight-guild">57</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Burkina Faso</td>
+<td class="num">24,601,700</td>
+<td class="num">18.0</td>
+<td class="num">51.6%</td>
+<td class="num">12,691,584</td>
+<td class="num highlight-local">8,461</td>
+<td class="num highlight-guild">56</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Sri Lanka</td>
+<td class="num">23,348,315</td>
+<td class="num">33.6</td>
+<td class="num">64.0%</td>
+<td class="num">14,937,438</td>
+<td class="num highlight-local">9,958</td>
+<td class="num highlight-guild">66</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Taiwan</td>
+<td class="num">23,011,292</td>
+<td class="num">45.4</td>
+<td class="num">73.3%</td>
+<td class="num">16,878,122</td>
+<td class="num highlight-local">11,252</td>
+<td class="num highlight-guild">75</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Malawi</td>
+<td class="num">22,785,535</td>
+<td class="num">18.4</td>
+<td class="num">51.9%</td>
+<td class="num">11,827,034</td>
+<td class="num highlight-local">7,884</td>
+<td class="num highlight-guild">52</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Zambia</td>
+<td class="num">22,521,915</td>
+<td class="num">18.2</td>
+<td class="num">51.7%</td>
+<td class="num">11,654,430</td>
+<td class="num highlight-local">7,769</td>
+<td class="num highlight-guild">51</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Chad</td>
+<td class="num">21,560,380</td>
+<td class="num">15.7</td>
+<td class="num">50.0%</td>
+<td class="num">10,780,190</td>
+<td class="num highlight-local">7,186</td>
+<td class="num highlight-guild">47</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Kazakhstan</td>
+<td class="num">21,083,626</td>
+<td class="num">29.7</td>
+<td class="num">60.9%</td>
+<td class="num">12,835,594</td>
+<td class="num highlight-local">8,557</td>
+<td class="num highlight-guild">57</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Somalia</td>
+<td class="num">20,305,907</td>
+<td class="num">15.6</td>
+<td class="num">50.0%</td>
+<td class="num">10,152,954</td>
+<td class="num highlight-local">6,768</td>
+<td class="num highlight-guild">45</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Chile</td>
+<td class="num">19,945,850</td>
+<td class="num">37.4</td>
+<td class="num">67.0%</td>
+<td class="num">13,362,556</td>
+<td class="num highlight-local">8,908</td>
+<td class="num highlight-guild">59</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Senegal</td>
+<td class="num">19,366,548</td>
+<td class="num">19.8</td>
+<td class="num">53.0%</td>
+<td class="num">10,267,690</td>
+<td class="num highlight-local">6,845</td>
+<td class="num highlight-guild">45</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Guatemala</td>
+<td class="num">18,967,978</td>
+<td class="num">23.8</td>
+<td class="num">56.2%</td>
+<td class="num">10,658,891</td>
+<td class="num highlight-local">7,105</td>
+<td class="num highlight-guild">47</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Romania</td>
+<td class="num">18,800,605</td>
+<td class="num">43.5</td>
+<td class="num">71.8%</td>
+<td class="num">13,506,035</td>
+<td class="num highlight-local">9,004</td>
+<td class="num highlight-guild">60</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Netherlands</td>
+<td class="num">18,448,775</td>
+<td class="num">41.5</td>
+<td class="num">70.3%</td>
+<td class="num">12,960,276</td>
+<td class="num highlight-local">8,640</td>
+<td class="num highlight-guild">57</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Ecuador</td>
+<td class="num">18,444,506</td>
+<td class="num">29.7</td>
+<td class="num">60.9%</td>
+<td class="num">11,228,913</td>
+<td class="num highlight-local">7,485</td>
+<td class="num highlight-guild">49</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cambodia</td>
+<td class="num">18,051,219</td>
+<td class="num">26.4</td>
+<td class="num">58.3%</td>
+<td class="num">10,516,432</td>
+<td class="num highlight-local">7,010</td>
+<td class="num highlight-guild">46</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Zimbabwe</td>
+<td class="num">17,273,580</td>
+<td class="num">18.3</td>
+<td class="num">51.8%</td>
+<td class="num">8,952,288</td>
+<td class="num highlight-local">5,968</td>
+<td class="num highlight-guild">39</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Guinea</td>
+<td class="num">15,441,993</td>
+<td class="num">18.5</td>
+<td class="num">52.0%</td>
+<td class="num">8,027,566</td>
+<td class="num highlight-local">5,351</td>
+<td class="num highlight-guild">35</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Benin</td>
+<td class="num">15,170,419</td>
+<td class="num">18.2</td>
+<td class="num">51.7%</td>
+<td class="num">7,850,246</td>
+<td class="num highlight-local">5,233</td>
+<td class="num highlight-guild">34</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Rwanda</td>
+<td class="num">14,889,693</td>
+<td class="num">20.2</td>
+<td class="num">53.3%</td>
+<td class="num">7,941,463</td>
+<td class="num highlight-local">5,294</td>
+<td class="num highlight-guild">35</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Burundi</td>
+<td class="num">14,729,157</td>
+<td class="num">16.6</td>
+<td class="num">50.5%</td>
+<td class="num">7,434,759</td>
+<td class="num highlight-local">4,956</td>
+<td class="num highlight-guild">33</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bolivia</td>
+<td class="num">12,749,291</td>
+<td class="num">25.5</td>
+<td class="num">57.5%</td>
+<td class="num">7,336,470</td>
+<td class="num highlight-local">4,890</td>
+<td class="num highlight-guild">32</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">South Sudan</td>
+<td class="num">12,436,037</td>
+<td class="num">19.0</td>
+<td class="num">52.4%</td>
+<td class="num">6,514,290</td>
+<td class="num highlight-local">4,342</td>
+<td class="num highlight-guild">28</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Tunisia</td>
+<td class="num">12,415,138</td>
+<td class="num">33.4</td>
+<td class="num">63.8%</td>
+<td class="num">7,923,054</td>
+<td class="num highlight-local">5,282</td>
+<td class="num highlight-guild">35</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Haiti</td>
+<td class="num">12,037,506</td>
+<td class="num">24.3</td>
+<td class="num">56.6%</td>
+<td class="num">6,812,169</td>
+<td class="num highlight-local">4,541</td>
+<td class="num highlight-guild">30</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Belgium</td>
+<td class="num">11,774,642</td>
+<td class="num">42.1</td>
+<td class="num">70.7%</td>
+<td class="num">8,327,796</td>
+<td class="num highlight-local">5,551</td>
+<td class="num highlight-guild">37</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Dominican Republic</td>
+<td class="num">11,609,500</td>
+<td class="num">28.7</td>
+<td class="num">60.1%</td>
+<td class="num">6,975,606</td>
+<td class="num highlight-local">4,650</td>
+<td class="num highlight-guild">31</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Jordan</td>
+<td class="num">11,589,532</td>
+<td class="num">24.9</td>
+<td class="num">57.1%</td>
+<td class="num">6,613,876</td>
+<td class="num highlight-local">4,409</td>
+<td class="num highlight-guild">29</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">United Arab Emirates</td>
+<td class="num">11,574,682</td>
+<td class="num">31.6</td>
+<td class="num">62.4%</td>
+<td class="num">7,221,244</td>
+<td class="num highlight-local">4,814</td>
+<td class="num highlight-guild">32</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Honduras</td>
+<td class="num">11,184,760</td>
+<td class="num">24.6</td>
+<td class="num">56.8%</td>
+<td class="num">6,356,236</td>
+<td class="num highlight-local">4,237</td>
+<td class="num highlight-guild">28</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Tajikistan</td>
+<td class="num">10,978,599</td>
+<td class="num">22.4</td>
+<td class="num">55.1%</td>
+<td class="num">6,047,272</td>
+<td class="num highlight-local">4,031</td>
+<td class="num highlight-guild">26</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Papua New Guinea</td>
+<td class="num">10,947,848</td>
+<td class="num">23.0</td>
+<td class="num">55.6%</td>
+<td class="num">6,082,497</td>
+<td class="num highlight-local">4,054</td>
+<td class="num highlight-guild">27</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cuba</td>
+<td class="num">10,892,659</td>
+<td class="num">42.5</td>
+<td class="num">71.0%</td>
+<td class="num">7,738,600</td>
+<td class="num highlight-local">5,159</td>
+<td class="num highlight-guild">34</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Sweden</td>
+<td class="num">10,701,047</td>
+<td class="num">40.4</td>
+<td class="num">69.4%</td>
+<td class="num">7,424,015</td>
+<td class="num highlight-local">4,949</td>
+<td class="num highlight-guild">32</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Czech Republic</td>
+<td class="num">10,527,781</td>
+<td class="num">44.3</td>
+<td class="num">72.5%</td>
+<td class="num">7,629,861</td>
+<td class="num highlight-local">5,086</td>
+<td class="num highlight-guild">33</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Azerbaijan</td>
+<td class="num">10,454,855</td>
+<td class="num">34.1</td>
+<td class="num">64.4%</td>
+<td class="num">6,730,164</td>
+<td class="num highlight-local">4,486</td>
+<td class="num highlight-guild">29</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Portugal</td>
+<td class="num">10,395,362</td>
+<td class="num">47.2</td>
+<td class="num">74.8%</td>
+<td class="num">7,773,292</td>
+<td class="num highlight-local">5,182</td>
+<td class="num highlight-guild">34</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Togo</td>
+<td class="num">9,930,918</td>
+<td class="num">19.2</td>
+<td class="num">52.5%</td>
+<td class="num">5,217,822</td>
+<td class="num highlight-local">3,478</td>
+<td class="num highlight-guild">23</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Greece</td>
+<td class="num">9,897,115</td>
+<td class="num">47.1</td>
+<td class="num">74.7%</td>
+<td class="num">7,392,861</td>
+<td class="num highlight-local">4,928</td>
+<td class="num highlight-guild">32</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Israel</td>
+<td class="num">9,647,689</td>
+<td class="num">29.3</td>
+<td class="num">60.6%</td>
+<td class="num">5,842,814</td>
+<td class="num highlight-local">3,895</td>
+<td class="num highlight-guild">25</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Hungary</td>
+<td class="num">9,585,818</td>
+<td class="num">44.2</td>
+<td class="num">72.4%</td>
+<td class="num">6,939,575</td>
+<td class="num highlight-local">4,626</td>
+<td class="num highlight-guild">30</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Austria</td>
+<td class="num">9,107,266</td>
+<td class="num">43.9</td>
+<td class="num">72.2%</td>
+<td class="num">6,571,434</td>
+<td class="num highlight-local">4,380</td>
+<td class="num highlight-guild">29</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Switzerland</td>
+<td class="num">9,007,798</td>
+<td class="num">43.2</td>
+<td class="num">71.6%</td>
+<td class="num">6,449,589</td>
+<td class="num highlight-local">4,299</td>
+<td class="num highlight-guild">28</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Sierra Leone</td>
+<td class="num">8,996,745</td>
+<td class="num">19.9</td>
+<td class="num">53.1%</td>
+<td class="num">4,777,008</td>
+<td class="num highlight-local">3,184</td>
+<td class="num highlight-guild">21</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Belarus</td>
+<td class="num">8,937,018</td>
+<td class="num">41.8</td>
+<td class="num">70.5%</td>
+<td class="num">6,299,552</td>
+<td class="num highlight-local">4,199</td>
+<td class="num highlight-guild">27</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Laos</td>
+<td class="num">7,974,017</td>
+<td class="num">25.3</td>
+<td class="num">57.4%</td>
+<td class="num">4,575,915</td>
+<td class="num highlight-local">3,050</td>
+<td class="num highlight-guild">20</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Turkmenistan</td>
+<td class="num">7,736,632</td>
+<td class="num">27.3</td>
+<td class="num">59.0%</td>
+<td class="num">4,562,567</td>
+<td class="num highlight-local">3,041</td>
+<td class="num highlight-guild">20</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Libya</td>
+<td class="num">7,539,851</td>
+<td class="num">28.0</td>
+<td class="num">59.5%</td>
+<td class="num">4,488,431</td>
+<td class="num highlight-local">2,992</td>
+<td class="num highlight-guild">19</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Kyrgyzstan</td>
+<td class="num">7,400,465</td>
+<td class="num">25.5</td>
+<td class="num">57.5%</td>
+<td class="num">4,258,534</td>
+<td class="num highlight-local">2,839</td>
+<td class="num highlight-guild">18</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Hong Kong</td>
+<td class="num">7,378,602</td>
+<td class="num">47.9</td>
+<td class="num">75.3%</td>
+<td class="num">5,558,480</td>
+<td class="num highlight-local">3,705</td>
+<td class="num highlight-guild">24</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Nicaragua</td>
+<td class="num">7,097,329</td>
+<td class="num">26.3</td>
+<td class="num">58.2%</td>
+<td class="num">4,129,186</td>
+<td class="num highlight-local">2,752</td>
+<td class="num highlight-guild">18</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Paraguay</td>
+<td class="num">7,095,279</td>
+<td class="num">27.3</td>
+<td class="num">59.0%</td>
+<td class="num">4,184,338</td>
+<td class="num highlight-local">2,789</td>
+<td class="num highlight-guild">18</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bulgaria</td>
+<td class="num">6,667,659</td>
+<td class="num">45.0</td>
+<td class="num">73.0%</td>
+<td class="num">4,869,357</td>
+<td class="num highlight-local">3,246</td>
+<td class="num highlight-guild">21</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Serbia</td>
+<td class="num">6,641,964</td>
+<td class="num">44.7</td>
+<td class="num">72.8%</td>
+<td class="num">4,834,768</td>
+<td class="num highlight-local">3,223</td>
+<td class="num highlight-guild">21</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Congo</td>
+<td class="num">6,637,785</td>
+<td class="num">18.7</td>
+<td class="num">52.1%</td>
+<td class="num">3,461,215</td>
+<td class="num highlight-local">2,307</td>
+<td class="num highlight-guild">15</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">El Salvador</td>
+<td class="num">6,391,253</td>
+<td class="num">28.4</td>
+<td class="num">59.8%</td>
+<td class="num">3,824,979</td>
+<td class="num highlight-local">2,549</td>
+<td class="num highlight-guild">16</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Denmark</td>
+<td class="num">6,023,520</td>
+<td class="num">41.3</td>
+<td class="num">70.1%</td>
+<td class="num">4,221,960</td>
+<td class="num highlight-local">2,814</td>
+<td class="num highlight-guild">18</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Singapore</td>
+<td class="num">5,905,748</td>
+<td class="num">36.8</td>
+<td class="num">66.5%</td>
+<td class="num">3,928,368</td>
+<td class="num highlight-local">2,618</td>
+<td class="num highlight-guild">17</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Lebanon</td>
+<td class="num">5,897,467</td>
+<td class="num">29.0</td>
+<td class="num">60.3%</td>
+<td class="num">3,557,562</td>
+<td class="num highlight-local">2,371</td>
+<td class="num highlight-guild">15</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Liberia</td>
+<td class="num">5,853,949</td>
+<td class="num">19.0</td>
+<td class="num">52.4%</td>
+<td class="num">3,066,437</td>
+<td class="num highlight-local">2,044</td>
+<td class="num highlight-guild">13</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Central African Republic</td>
+<td class="num">5,698,984</td>
+<td class="num">14.6</td>
+<td class="num">50.0%</td>
+<td class="num">2,849,492</td>
+<td class="num highlight-local">1,899</td>
+<td class="num highlight-guild">12</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">State of Palestine</td>
+<td class="num">5,692,790</td>
+<td class="num">20.3</td>
+<td class="num">53.4%</td>
+<td class="num">3,040,788</td>
+<td class="num highlight-local">2,027</td>
+<td class="num highlight-guild">13</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Oman</td>
+<td class="num">5,671,458</td>
+<td class="num">29.8</td>
+<td class="num">61.0%</td>
+<td class="num">3,457,256</td>
+<td class="num highlight-local">2,304</td>
+<td class="num highlight-guild">15</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Norway</td>
+<td class="num">5,652,989</td>
+<td class="num">40.1</td>
+<td class="num">69.1%</td>
+<td class="num">3,908,380</td>
+<td class="num highlight-local">2,605</td>
+<td class="num highlight-guild">17</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Finland</td>
+<td class="num">5,621,739</td>
+<td class="num">43.4</td>
+<td class="num">71.8%</td>
+<td class="num">4,034,097</td>
+<td class="num highlight-local">2,689</td>
+<td class="num highlight-guild">17</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mauritania</td>
+<td class="num">5,461,319</td>
+<td class="num">17.5</td>
+<td class="num">51.2%</td>
+<td class="num">2,795,714</td>
+<td class="num highlight-local">1,863</td>
+<td class="num highlight-guild">12</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Slovakia</td>
+<td class="num">5,451,342</td>
+<td class="num">42.8</td>
+<td class="num">71.3%</td>
+<td class="num">3,885,848</td>
+<td class="num highlight-local">2,590</td>
+<td class="num highlight-guild">17</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Ireland</td>
+<td class="num">5,356,950</td>
+<td class="num">39.2</td>
+<td class="num">68.4%</td>
+<td class="num">3,665,417</td>
+<td class="num highlight-local">2,443</td>
+<td class="num highlight-guild">16</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">New Zealand</td>
+<td class="num">5,287,479</td>
+<td class="num">38.0</td>
+<td class="num">67.5%</td>
+<td class="num">3,567,496</td>
+<td class="num highlight-local">2,378</td>
+<td class="num highlight-guild">15</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Costa Rica</td>
+<td class="num">5,174,789</td>
+<td class="num">35.7</td>
+<td class="num">65.6%</td>
+<td class="num">3,396,947</td>
+<td class="num highlight-local">2,264</td>
+<td class="num highlight-guild">15</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Kuwait</td>
+<td class="num">5,102,773</td>
+<td class="num">34.8</td>
+<td class="num">64.9%</td>
+<td class="num">3,313,203</td>
+<td class="num highlight-local">2,208</td>
+<td class="num highlight-guild">14</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Panama</td>
+<td class="num">4,625,718</td>
+<td class="num">30.6</td>
+<td class="num">61.6%</td>
+<td class="num">2,849,172</td>
+<td class="num highlight-local">1,899</td>
+<td class="num highlight-guild">12</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Croatia</td>
+<td class="num">3,822,345</td>
+<td class="num">45.5</td>
+<td class="num">73.4%</td>
+<td class="num">2,806,616</td>
+<td class="num highlight-local">1,871</td>
+<td class="num highlight-guild">12</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Georgia</td>
+<td class="num">3,804,642</td>
+<td class="num">37.6</td>
+<td class="num">67.2%</td>
+<td class="num">2,554,931</td>
+<td class="num highlight-local">1,703</td>
+<td class="num highlight-guild">11</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Eritrea</td>
+<td class="num">3,682,669</td>
+<td class="num">19.5</td>
+<td class="num">52.8%</td>
+<td class="num">1,943,691</td>
+<td class="num highlight-local">1,295</td>
+<td class="num highlight-guild">8</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mongolia</td>
+<td class="num">3,556,798</td>
+<td class="num">27.0</td>
+<td class="num">58.7%</td>
+<td class="num">2,089,097</td>
+<td class="num highlight-local">1,392</td>
+<td class="num highlight-guild">9</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Uruguay</td>
+<td class="num">3,382,537</td>
+<td class="num">36.7</td>
+<td class="num">66.4%</td>
+<td class="num">2,247,300</td>
+<td class="num highlight-local">1,498</td>
+<td class="num highlight-guild">9</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Puerto Rico</td>
+<td class="num">3,222,688</td>
+<td class="num">46.2</td>
+<td class="num">74.0%</td>
+<td class="num">2,384,223</td>
+<td class="num highlight-local">1,589</td>
+<td class="num highlight-guild">10</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Qatar</td>
+<td class="num">3,173,559</td>
+<td class="num">33.4</td>
+<td class="num">63.8%</td>
+<td class="num">2,025,292</td>
+<td class="num highlight-local">1,350</td>
+<td class="num highlight-guild">9</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Namibia</td>
+<td class="num">3,153,246</td>
+<td class="num">21.5</td>
+<td class="num">54.4%</td>
+<td class="num">1,714,346</td>
+<td class="num highlight-local">1,142</td>
+<td class="num highlight-guild">7</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bosnia and Herzegovina</td>
+<td class="num">3,114,242</td>
+<td class="num">46.1</td>
+<td class="num">73.9%</td>
+<td class="num">2,301,519</td>
+<td class="num highlight-local">1,534</td>
+<td class="num highlight-guild">10</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Moldova</td>
+<td class="num">2,961,253</td>
+<td class="num">39.1</td>
+<td class="num">68.3%</td>
+<td class="num">2,023,844</td>
+<td class="num highlight-local">1,349</td>
+<td class="num highlight-guild">8</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Armenia</td>
+<td class="num">2,930,915</td>
+<td class="num">37.2</td>
+<td class="num">66.8%</td>
+<td class="num">1,958,887</td>
+<td class="num highlight-local">1,305</td>
+<td class="num highlight-guild">8</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Gambia</td>
+<td class="num">2,884,079</td>
+<td class="num">18.8</td>
+<td class="num">52.2%</td>
+<td class="num">1,506,168</td>
+<td class="num highlight-local">1,004</td>
+<td class="num highlight-guild">6</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Jamaica</td>
+<td class="num">2,833,403</td>
+<td class="num">33.3</td>
+<td class="num">63.7%</td>
+<td class="num">1,805,962</td>
+<td class="num highlight-local">1,203</td>
+<td class="num highlight-guild">8</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Lithuania</td>
+<td class="num">2,797,338</td>
+<td class="num">42.6</td>
+<td class="num">71.1%</td>
+<td class="num">1,989,567</td>
+<td class="num highlight-local">1,326</td>
+<td class="num highlight-guild">8</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Albania</td>
+<td class="num">2,751,025</td>
+<td class="num">37.8</td>
+<td class="num">67.3%</td>
+<td class="num">1,851,765</td>
+<td class="num highlight-local">1,234</td>
+<td class="num highlight-guild">8</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Gabon</td>
+<td class="num">2,647,399</td>
+<td class="num">21.6</td>
+<td class="num">54.4%</td>
+<td class="num">1,441,431</td>
+<td class="num highlight-local">960</td>
+<td class="num highlight-guild">6</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Botswana</td>
+<td class="num">2,603,388</td>
+<td class="num">23.7</td>
+<td class="num">56.1%</td>
+<td class="num">1,460,884</td>
+<td class="num highlight-local">973</td>
+<td class="num highlight-guild">6</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Lesotho</td>
+<td class="num">2,389,336</td>
+<td class="num">22.1</td>
+<td class="num">54.8%</td>
+<td class="num">1,310,411</td>
+<td class="num highlight-local">873</td>
+<td class="num highlight-guild">5</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Guinea-Bissau</td>
+<td class="num">2,297,808</td>
+<td class="num">19.6</td>
+<td class="num">52.9%</td>
+<td class="num">1,214,594</td>
+<td class="num highlight-local">809</td>
+<td class="num highlight-guild">5</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Slovenia</td>
+<td class="num">2,114,573</td>
+<td class="num">45.0</td>
+<td class="num">73.0%</td>
+<td class="num">1,544,262</td>
+<td class="num highlight-local">1,029</td>
+<td class="num highlight-guild">6</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Equatorial Guinea</td>
+<td class="num">1,984,468</td>
+<td class="num">20.9</td>
+<td class="num">53.9%</td>
+<td class="num">1,069,453</td>
+<td class="num highlight-local">712</td>
+<td class="num highlight-guild">4</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Latvia</td>
+<td class="num">1,835,935</td>
+<td class="num">43.8</td>
+<td class="num">72.1%</td>
+<td class="num">1,323,278</td>
+<td class="num highlight-local">882</td>
+<td class="num highlight-guild">5</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">North Macedonia</td>
+<td class="num">1,804,063</td>
+<td class="num">41.4</td>
+<td class="num">70.2%</td>
+<td class="num">1,265,923</td>
+<td class="num highlight-local">843</td>
+<td class="num highlight-guild">5</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bahrain</td>
+<td class="num">1,675,572</td>
+<td class="num">33.4</td>
+<td class="num">63.8%</td>
+<td class="num">1,069,311</td>
+<td class="num highlight-local">712</td>
+<td class="num highlight-guild">4</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Trinidad and Tobago</td>
+<td class="num">1,513,268</td>
+<td class="num">38.2</td>
+<td class="num">67.6%</td>
+<td class="num">1,023,415</td>
+<td class="num highlight-local">682</td>
+<td class="num highlight-guild">4</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Timor-Leste</td>
+<td class="num">1,436,923</td>
+<td class="num">22.1</td>
+<td class="num">54.8%</td>
+<td class="num">788,068</td>
+<td class="num highlight-local">525</td>
+<td class="num highlight-guild">3</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cyprus</td>
+<td class="num">1,382,334</td>
+<td class="num">39.1</td>
+<td class="num">68.3%</td>
+<td class="num">944,745</td>
+<td class="num highlight-local">629</td>
+<td class="num highlight-guild">4</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Estonia</td>
+<td class="num">1,331,062</td>
+<td class="num">43.2</td>
+<td class="num">71.6%</td>
+<td class="num">953,041</td>
+<td class="num highlight-local">635</td>
+<td class="num highlight-guild">4</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Eswatini</td>
+<td class="num">1,269,859</td>
+<td class="num">22.7</td>
+<td class="num">55.3%</td>
+<td class="num">702,494</td>
+<td class="num highlight-local">468</td>
+<td class="num highlight-guild">3</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mauritius</td>
+<td class="num">1,265,059</td>
+<td class="num">38.3</td>
+<td class="num">67.7%</td>
+<td class="num">856,557</td>
+<td class="num highlight-local">571</td>
+<td class="num highlight-guild">3</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Djibouti</td>
+<td class="num">1,199,459</td>
+<td class="num">25.2</td>
+<td class="num">57.3%</td>
+<td class="num">687,361</td>
+<td class="num highlight-local">458</td>
+<td class="num highlight-guild">3</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Fiji</td>
+<td class="num">937,282</td>
+<td class="num">28.3</td>
+<td class="num">59.8%</td>
+<td class="num">560,192</td>
+<td class="num highlight-local">373</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Comoros</td>
+<td class="num">899,010</td>
+<td class="num">20.7</td>
+<td class="num">53.7%</td>
+<td class="num">483,059</td>
+<td class="num highlight-local">322</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Reunion</td>
+<td class="num">886,298</td>
+<td class="num">38.4</td>
+<td class="num">67.8%</td>
+<td class="num">600,806</td>
+<td class="num highlight-local">400</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Solomon Islands</td>
+<td class="num">858,288</td>
+<td class="num">20.9</td>
+<td class="num">53.9%</td>
+<td class="num">462,542</td>
+<td class="num highlight-local">308</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Guyana</td>
+<td class="num">840,890</td>
+<td class="num">26.5</td>
+<td class="num">58.3%</td>
+<td class="num">490,561</td>
+<td class="num highlight-local">327</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bhutan</td>
+<td class="num">802,214</td>
+<td class="num">31.0</td>
+<td class="num">61.9%</td>
+<td class="num">496,665</td>
+<td class="num highlight-local">331</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Macao</td>
+<td class="num">723,188</td>
+<td class="num">40.3</td>
+<td class="num">69.3%</td>
+<td class="num">501,148</td>
+<td class="num highlight-local">334</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Luxembourg</td>
+<td class="num">687,448</td>
+<td class="num">39.7</td>
+<td class="num">68.8%</td>
+<td class="num">473,106</td>
+<td class="num highlight-local">315</td>
+<td class="num highlight-guild">2</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Suriname</td>
+<td class="num">645,256</td>
+<td class="num">28.9</td>
+<td class="num">60.2%</td>
+<td class="num">388,729</td>
+<td class="num highlight-local">259</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Montenegro</td>
+<td class="num">626,233</td>
+<td class="num">40.4</td>
+<td class="num">69.4%</td>
+<td class="num">434,459</td>
+<td class="num highlight-local">289</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Western Sahara</td>
+<td class="num">610,813</td>
+<td class="num">32.8</td>
+<td class="num">63.3%</td>
+<td class="num">386,896</td>
+<td class="num highlight-local">257</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Malta</td>
+<td class="num">549,011</td>
+<td class="num">41.5</td>
+<td class="num">70.3%</td>
+<td class="num">385,681</td>
+<td class="num highlight-local">257</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Maldives</td>
+<td class="num">531,517</td>
+<td class="num">33.4</td>
+<td class="num">63.8%</td>
+<td class="num">339,202</td>
+<td class="num highlight-local">226</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cabo Verde</td>
+<td class="num">529,630</td>
+<td class="num">29.5</td>
+<td class="num">60.7%</td>
+<td class="num">321,595</td>
+<td class="num highlight-local">214</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Brunei</td>
+<td class="num">469,775</td>
+<td class="num">33.2</td>
+<td class="num">63.7%</td>
+<td class="num">299,053</td>
+<td class="num highlight-local">199</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Belize</td>
+<td class="num">428,644</td>
+<td class="num">27.3</td>
+<td class="num">59.0%</td>
+<td class="num">252,787</td>
+<td class="num highlight-local">168</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bahamas</td>
+<td class="num">404,628</td>
+<td class="num">35.7</td>
+<td class="num">65.6%</td>
+<td class="num">265,615</td>
+<td class="num highlight-local">177</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Iceland</td>
+<td class="num">402,329</td>
+<td class="num">36.6</td>
+<td class="num">66.4%</td>
+<td class="num">266,981</td>
+<td class="num highlight-local">177</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Guadeloupe</td>
+<td class="num">372,453</td>
+<td class="num">47.4</td>
+<td class="num">74.9%</td>
+<td class="num">279,099</td>
+<td class="num highlight-local">186</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Mayotte</td>
+<td class="num">347,536</td>
+<td class="num">17.3</td>
+<td class="num">51.0%</td>
+<td class="num">177,356</td>
+<td class="num highlight-local">118</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Vanuatu</td>
+<td class="num">342,564</td>
+<td class="num">20.3</td>
+<td class="num">53.4%</td>
+<td class="num">182,980</td>
+<td class="num highlight-local">121</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Martinique</td>
+<td class="num">337,711</td>
+<td class="num">50.2</td>
+<td class="num">77.2%</td>
+<td class="num">260,574</td>
+<td class="num highlight-local">173</td>
+<td class="num highlight-guild">1</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">French Guiana</td>
+<td class="num">318,872</td>
+<td class="num">24.9</td>
+<td class="num">57.1%</td>
+<td class="num">181,973</td>
+<td class="num highlight-local">121</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">New Caledonia</td>
+<td class="num">297,892</td>
+<td class="num">34.8</td>
+<td class="num">64.9%</td>
+<td class="num">193,420</td>
+<td class="num highlight-local">128</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">French Polynesia</td>
+<td class="num">283,076</td>
+<td class="num">36.7</td>
+<td class="num">66.4%</td>
+<td class="num">188,071</td>
+<td class="num highlight-local">125</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Barbados</td>
+<td class="num">282,724</td>
+<td class="num">39.7</td>
+<td class="num">68.8%</td>
+<td class="num">194,572</td>
+<td class="num highlight-local">129</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Sao Tome and Principe</td>
+<td class="num">244,994</td>
+<td class="num">19.7</td>
+<td class="num">52.9%</td>
+<td class="num">129,696</td>
+<td class="num highlight-local">86</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Samoa</td>
+<td class="num">220,528</td>
+<td class="num">19.8</td>
+<td class="num">53.0%</td>
+<td class="num">116,919</td>
+<td class="num highlight-local">77</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Curacao</td>
+<td class="num">185,440</td>
+<td class="num">39.0</td>
+<td class="num">68.3%</td>
+<td class="num">126,590</td>
+<td class="num highlight-local">84</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saint Lucia</td>
+<td class="num">180,488</td>
+<td class="num">35.1</td>
+<td class="num">65.2%</td>
+<td class="num">117,620</td>
+<td class="num highlight-local">78</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Guam</td>
+<td class="num">170,185</td>
+<td class="num">31.6</td>
+<td class="num">62.4%</td>
+<td class="num">106,175</td>
+<td class="num highlight-local">70</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Kiribati</td>
+<td class="num">138,445</td>
+<td class="num">23.0</td>
+<td class="num">55.6%</td>
+<td class="num">76,918</td>
+<td class="num highlight-local">51</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Seychelles</td>
+<td class="num">134,959</td>
+<td class="num">34.6</td>
+<td class="num">64.8%</td>
+<td class="num">87,414</td>
+<td class="num highlight-local">58</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Grenada</td>
+<td class="num">117,362</td>
+<td class="num">34.9</td>
+<td class="num">65.0%</td>
+<td class="num">76,296</td>
+<td class="num highlight-local">50</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Micronesia</td>
+<td class="num">114,183</td>
+<td class="num">23.5</td>
+<td class="num">56.0%</td>
+<td class="num">63,892</td>
+<td class="num highlight-local">42</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Aruba</td>
+<td class="num">108,164</td>
+<td class="num">41.7</td>
+<td class="num">70.4%</td>
+<td class="num">76,157</td>
+<td class="num highlight-local">50</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Tonga</td>
+<td class="num">103,291</td>
+<td class="num">21.0</td>
+<td class="num">54.0%</td>
+<td class="num">55,747</td>
+<td class="num highlight-local">37</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">St. Vincent and Grenadines</td>
+<td class="num">99,245</td>
+<td class="num">34.7</td>
+<td class="num">64.9%</td>
+<td class="num">64,360</td>
+<td class="num highlight-local">42</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Antigua and Barbuda</td>
+<td class="num">94,626</td>
+<td class="num">36.7</td>
+<td class="num">66.4%</td>
+<td class="num">62,868</td>
+<td class="num highlight-local">41</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Isle of Man</td>
+<td class="num">84,055</td>
+<td class="num">46.3</td>
+<td class="num">74.1%</td>
+<td class="num">62,253</td>
+<td class="num highlight-local">41</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Andorra</td>
+<td class="num">83,753</td>
+<td class="num">44.2</td>
+<td class="num">72.4%</td>
+<td class="num">60,632</td>
+<td class="num highlight-local">40</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">U.S. Virgin Islands</td>
+<td class="num">83,400</td>
+<td class="num">44.9</td>
+<td class="num">73.0%</td>
+<td class="num">60,840</td>
+<td class="num highlight-local">40</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cayman Islands</td>
+<td class="num">77,196</td>
+<td class="num">39.1</td>
+<td class="num">68.3%</td>
+<td class="num">52,759</td>
+<td class="num highlight-local">35</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Dominica</td>
+<td class="num">65,511</td>
+<td class="num">36.6</td>
+<td class="num">66.4%</td>
+<td class="num">43,472</td>
+<td class="num highlight-local">28</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Bermuda</td>
+<td class="num">64,459</td>
+<td class="num">46.4</td>
+<td class="num">74.1%</td>
+<td class="num">47,791</td>
+<td class="num highlight-local">31</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Faeroe Islands</td>
+<td class="num">56,526</td>
+<td class="num">37.1</td>
+<td class="num">66.8%</td>
+<td class="num">37,734</td>
+<td class="num highlight-local">25</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Greenland</td>
+<td class="num">55,629</td>
+<td class="num">35.5</td>
+<td class="num">65.5%</td>
+<td class="num">36,429</td>
+<td class="num highlight-local">24</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Turks and Caicos</td>
+<td class="num">47,148</td>
+<td class="num">39.6</td>
+<td class="num">68.7%</td>
+<td class="num">32,410</td>
+<td class="num highlight-local">21</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saint Kitts and Nevis</td>
+<td class="num">46,992</td>
+<td class="num">36.5</td>
+<td class="num">66.3%</td>
+<td class="num">31,146</td>
+<td class="num highlight-local">20</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">American Samoa</td>
+<td class="num">45,319</td>
+<td class="num">29.1</td>
+<td class="num">60.4%</td>
+<td class="num">27,374</td>
+<td class="num highlight-local">18</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Sint Maarten</td>
+<td class="num">44,447</td>
+<td class="num">42.0</td>
+<td class="num">70.6%</td>
+<td class="num">31,401</td>
+<td class="num highlight-local">20</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Northern Mariana Islands</td>
+<td class="num">42,914</td>
+<td class="num">38.8</td>
+<td class="num">68.1%</td>
+<td class="num">29,227</td>
+<td class="num highlight-local">19</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Gibraltar</td>
+<td class="num">40,867</td>
+<td class="num">38.8</td>
+<td class="num">68.1%</td>
+<td class="num">27,833</td>
+<td class="num highlight-local">18</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Liechtenstein</td>
+<td class="num">40,368</td>
+<td class="num">44.7</td>
+<td class="num">72.8%</td>
+<td class="num">29,384</td>
+<td class="num highlight-local">19</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">British Virgin Islands</td>
+<td class="num">39,936</td>
+<td class="num">39.1</td>
+<td class="num">68.3%</td>
+<td class="num">27,294</td>
+<td class="num highlight-local">18</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Monaco</td>
+<td class="num">38,087</td>
+<td class="num">53.1</td>
+<td class="num">79.5%</td>
+<td class="num">30,265</td>
+<td class="num highlight-local">20</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Marshall Islands</td>
+<td class="num">35,075</td>
+<td class="num">20.5</td>
+<td class="num">53.6%</td>
+<td class="num">18,791</td>
+<td class="num highlight-local">12</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">San Marino</td>
+<td class="num">33,605</td>
+<td class="num">49.1</td>
+<td class="num">76.3%</td>
+<td class="num">25,636</td>
+<td class="num highlight-local">17</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Caribbean Netherlands</td>
+<td class="num">31,913</td>
+<td class="num">39.7</td>
+<td class="num">68.8%</td>
+<td class="num">21,963</td>
+<td class="num highlight-local">14</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saint Martin</td>
+<td class="num">23,898</td>
+<td class="num">43.9</td>
+<td class="num">72.2%</td>
+<td class="num">17,244</td>
+<td class="num highlight-local">11</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Palau</td>
+<td class="num">17,614</td>
+<td class="num">38.9</td>
+<td class="num">68.2%</td>
+<td class="num">12,010</td>
+<td class="num highlight-local">8</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Anguilla</td>
+<td class="num">14,817</td>
+<td class="num">39.1</td>
+<td class="num">68.3%</td>
+<td class="num">10,127</td>
+<td class="num highlight-local">6</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Cook Islands</td>
+<td class="num">12,826</td>
+<td class="num">38.1</td>
+<td class="num">67.6%</td>
+<td class="num">8,664</td>
+<td class="num highlight-local">5</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Nauru</td>
+<td class="num">12,101</td>
+<td class="num">20.2</td>
+<td class="num">53.3%</td>
+<td class="num">6,454</td>
+<td class="num highlight-local">4</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saint Barthelemy</td>
+<td class="num">11,550</td>
+<td class="num">39.1</td>
+<td class="num">68.3%</td>
+<td class="num">7,894</td>
+<td class="num highlight-local">5</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Wallis and Futuna</td>
+<td class="num">11,113</td>
+<td class="num">38.6</td>
+<td class="num">67.9%</td>
+<td class="num">7,551</td>
+<td class="num highlight-local">5</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Tuvalu</td>
+<td class="num">9,362</td>
+<td class="num">24.1</td>
+<td class="num">56.4%</td>
+<td class="num">5,283</td>
+<td class="num highlight-local">3</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saint Pierre and Miquelon</td>
+<td class="num">5,513</td>
+<td class="num">47.6</td>
+<td class="num">75.1%</td>
+<td class="num">4,140</td>
+<td class="num highlight-local">2</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Saint Helena</td>
+<td class="num">5,147</td>
+<td class="num">51.0</td>
+<td class="num">77.8%</td>
+<td class="num">4,004</td>
+<td class="num highlight-local">2</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Montserrat</td>
+<td class="num">4,328</td>
+<td class="num">41.8</td>
+<td class="num">70.5%</td>
+<td class="num">3,051</td>
+<td class="num highlight-local">2</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Falkland Islands</td>
+<td class="num">3,465</td>
+<td class="num">43.4</td>
+<td class="num">71.8%</td>
+<td class="num">2,486</td>
+<td class="num highlight-local">1</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Tokelau</td>
+<td class="num">2,691</td>
+<td class="num">27.6</td>
+<td class="num">59.2%</td>
+<td class="num">1,593</td>
+<td class="num highlight-local">1</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Niue</td>
+<td class="num">1,822</td>
+<td class="num">35.1</td>
+<td class="num">65.2%</td>
+<td class="num">1,187</td>
+<td class="num highlight-local">0</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr><tr>
+<td class="country">Holy See</td>
+<td class="num">506</td>
+<td class="num">56.2</td>
+<td class="num">80.0%</td>
+<td class="num">405</td>
+<td class="num highlight-local">0</td>
+<td class="num highlight-guild">0</td>
+<td class="num highlight-group">0</td>
+</tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="country">WORLD TOTAL</td>
+          <td>8,298,842,686</td>
+          <td>&ndash;</td>
+          <td>&ndash;</td>
+          <td>5,179,385,731</td>
+          <td>3,452,809</td>
+          <td>22,918</td>
+          <td>13</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="methodology">
+    <h2>Methodology &amp; sources</h2>
+    <p><b>Population &amp; median age:</b> Worldometer, elaboration of UN DESA Population Division, World Population Prospects 2024 Revision (medium-fertility variant), accessed 20 Jul 2026.</p>
+    <p><b>Est. % age 18–75:</b> no single public dataset gives the exact 18–75 band for every country, so it is approximated from each country's median age &mdash; 50% for the youngest-population countries (median age ≈16) rising to 80% for the oldest (median age ≈50+), interpolated linearly. This is an estimate, not a census figure; substitute official national statistics for precision.</p>
+    <p><b>Local members</b> = floor(Members ÷ 1,500) &nbsp;|&nbsp; <b>Guild members</b> = floor(Local members ÷ 150) &nbsp;|&nbsp; <b>Group members</b> = floor(Guild members ÷ 700). All tiers are floored to whole seats; countries below a tier's threshold show 0.</p>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById('search');
+  const rows = document.querySelectorAll('#dataTable tbody tr');
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    rows.forEach(r => {
+      const name = r.querySelector('.country').textContent.toLowerCase();
+      r.style.display = name.includes(q) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>
